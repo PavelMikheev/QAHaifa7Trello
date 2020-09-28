@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -15,7 +16,7 @@ public class LoginTests extends TestBase{
 
 
     @BeforeMethod
-    public void initTests() throws InterruptedException {
+    public void initTests() {
 
         //Open login window
         WebElement loginIcon = driver.findElement(By.xpath("//a[@class='btn btn-sm btn-link text-white']"));
@@ -25,7 +26,7 @@ public class LoginTests extends TestBase{
 
 
     @Test
-    public void loginNegativeLoginEmpty() throws InterruptedException {
+    public void loginNegativeLoginEmpty() {
         //enter empty login and password
         waitUntilElementIsClickable(By.id("password"), 15);
         WebElement passwordField = driver.findElement(By.id("password"));
@@ -38,13 +39,14 @@ public class LoginTests extends TestBase{
         loginButton.click();
         waitUntilElementIsPresent(By.id("error"), 15);
         //receive error message
-        System.out.println("Error:  " + driver.findElement(By.id("error")).getText());
+       // System.out.println("Error:  " + driver.findElement(By.id("error")).getText());
+        Assert.assertEquals(driver.findElement(By.id("error")).getText(), "Отсутствует адрес электронной почты");
 
 
     }
 
     @Test
-    public void loginPasswordIncorrect() throws InterruptedException {
+    public void loginPasswordIncorrect() {
 
         WebElement loginField = driver.findElement(By.id("user"));
         loginField.click();
@@ -65,7 +67,7 @@ public class LoginTests extends TestBase{
     }
 
     @Test
-    public void PasswordIncorrect() throws InterruptedException {
+    public void PasswordIncorrect() {
 
         WebElement loginField = driver.findElement(By.id("user"));
         loginField.click();
@@ -85,7 +87,7 @@ public class LoginTests extends TestBase{
     }
 
     @Test
-    public void LoginPositiveTest() throws InterruptedException {
+    public void LoginPositiveTest() {
 
         waitUntilElementIsClickable(By.id("user"),15);
         WebElement loginField = driver.findElement(By.id("user"));
@@ -99,9 +101,10 @@ public class LoginTests extends TestBase{
         passwordField.sendKeys("Perfect10)");
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        waitUntilElementIsPresent(By.xpath("//span[@class='_3qwe2tMMFonNvf'][contains(text(),'Boards')]"), 15);
-        System.out.println(driver.findElement(By.xpath("//span[@class='_3qwe2tMMFonNvf'][contains(text(),'Boards')]")).getText());
-
+        waitUntilElementIsPresent(By.xpath("//button[@data-test-id=\"header-boards-menu-button\"]"), 15);
+        //System.out.println(driver.findElement(By.xpath("//button[@data-test-id=\"header-boards-menu-button\"]")).getText());
+        Assert.assertTrue(driver.findElement(By.xpath("//button[@data-test-id=\"header-boards-menu-button\"]")).getText().equals("Boards"),
+                "The text button is not BOARDS");
     }
 }
 
