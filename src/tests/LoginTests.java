@@ -17,54 +17,29 @@ public class LoginTests extends TestBase{
 
     @BeforeMethod
     public void initTests() {
-
-        //Open login window
-        WebElement loginIcon = driver.findElement(By.xpath("//a[@class='btn btn-sm btn-link text-white']"));
-        loginIcon.click();
-       }
-
+        waitUntilHomePageIsLoaded();
+        openLoginPage();
+        waitUntilLoginPageIsLoaded();
+    }
 
 
     @Test
     public void loginNegativeLoginEmpty() {
-        //enter empty login and password
-        waitUntilElementIsClickable(By.id("password"), 15);
-        WebElement passwordField = driver.findElement(By.id("password"));
-        passwordField.click();
-        passwordField.clear();
-        passwordField.sendKeys("Perfect10)");
-        //press login button
-        waitUntilElementIsClickable(By.id("login"), 10);
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
-        waitUntilElementIsPresent(By.id("error"), 15);
+        enterEmptyLoginAndPassword(PASSWORD);
+        pressLoginButton();
         //receive error message
-       // System.out.println("Error:  " + driver.findElement(By.id("error")).getText());
-        Assert.assertEquals(driver.findElement(By.id("error")).getText(), "Отсутствует адрес электронной почты");
-
-
-    }
+        Assert.assertEquals(getErrorMessage(), "Missing email");
+     }
 
     @Test
     public void loginPasswordIncorrect() {
-
-        WebElement loginField = driver.findElement(By.id("user"));
-        loginField.click();
-        loginField.clear();
-        loginField.sendKeys("user77");
-
-        waitUntilElementIsClickable(By.id("password"), 15);
-        WebElement passwordField = driver.findElement(By.id("password"));
-        passwordField.click();
-        passwordField.clear();
-        passwordField.sendKeys("password1");
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
-
-        waitUntilElementIsPresent(By.id("error"), 15);
-        System.out.println("Error: " + driver.findElement(By.xpath("//div[@id='error']")).getText());
-
+        enterIncorrectLogin("user77");
+        enterIncorrectPassword("password1");
+        pressLoginButton();
+        Assert.assertEquals(getErrorMessage(), "There isn't an account for this username",
+                "The error message is not 'There isn't an account for this username'");
     }
+
 
     @Test
     public void PasswordIncorrect() {
@@ -72,24 +47,21 @@ public class LoginTests extends TestBase{
         WebElement loginField = driver.findElement(By.id("user"));
         loginField.click();
         loginField.clear();
-        loginField.sendKeys("pavelmikheev65@gmail.com");
+        loginField.sendKeys(LOGIN);
         waitUntilElementIsClickable(By.id("password"), 15);
-        WebElement passwordField = driver.findElement(By.id("password"));
-        passwordField.click();
-        passwordField.clear();
-        passwordField.sendKeys("password1");
+        enterIncorrectPassword("password1");
         waitUntilElementIsClickable(By.id("login"), 15);
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
-        waitUntilElementIsPresent(By.xpath("//p[contains(text(),'.')]"), 15);
-        System.out.println("Error: " + driver.findElement(By.xpath("//p[contains(text(),'.')]")).getText());
+        pressLoginButton();
+        waitUntilElementIsVisible(By.id("password-error"), 15);
+        Assert.assertTrue(driver.findElement(By.id("password-error")).getText().contains("Incorrect email address and"),
+                "The error message is not contains the text 'Incorrect email address and'");
 
     }
 
     @Test
     public void LoginPositiveTest() {
 
-        waitUntilElementIsClickable(By.id("user"),15);
+
         WebElement loginField = driver.findElement(By.id("user"));
         loginField.click();
         loginField.clear();
@@ -99,12 +71,59 @@ public class LoginTests extends TestBase{
         passwordField.click();
         passwordField.clear();
         passwordField.sendKeys("Perfect10)");
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
+        pressLoginButton();
         waitUntilElementIsPresent(By.xpath("//button[@data-test-id=\"header-boards-menu-button\"]"), 15);
         //System.out.println(driver.findElement(By.xpath("//button[@data-test-id=\"header-boards-menu-button\"]")).getText());
         Assert.assertTrue(driver.findElement(By.xpath("//button[@data-test-id=\"header-boards-menu-button\"]")).getText().equals("Boards"),
                 "The text button is not BOARDS");
+    }
+
+    private void waitUntilLoginPageIsLoaded() {
+        waitUntilElementIsClickable(By.id("password"), 15);
+        waitUntilElementIsClickable(By.id("login"),15);
+        waitUntilElementIsClickable(By.id("user"),15);
+    }
+
+    private void openLoginPage() {
+        WebElement loginIcon = driver.findElement(By.xpath("//a[@class='btn btn-sm btn-link text-white']"));
+        loginIcon.click();
+    }
+
+    private void waitUntilHomePageIsLoaded() {
+        waitUntilElementIsClickable(By.xpath("//a[@class='btn btn-sm btn-link text-white']"),15);
+    }
+
+    public String getErrorMessage(){
+        waitUntilElementIsPresent(By.id("error"), 15);
+        return driver.findElement(By.id("error")).getText();
+    }
+
+    private void pressLoginButton() {
+        //press login button
+        WebElement loginButton = driver.findElement(By.id("login"));
+        loginButton.click();
+    }
+
+    private void enterEmptyLoginAndPassword(String password) {
+        //enter empty login and password
+        WebElement passwordField = driver.findElement(By.id("password"));
+        passwordField.click();
+        passwordField.clear();
+        passwordField.sendKeys("Perfect10)");
+    }
+
+    private void enterIncorrectPassword(String password) {
+        WebElement passwordField = driver.findElement(By.id("password"));
+        passwordField.click();
+        passwordField.clear();
+        passwordField.sendKeys(password);
+    }
+
+    private void enterIncorrectLogin(String login) {
+        WebElement loginField = driver.findElement(By.id("user"));
+        loginField.click();
+        loginField.clear();
+        loginField.sendKeys(login);
     }
 }
 

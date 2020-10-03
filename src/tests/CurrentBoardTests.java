@@ -42,8 +42,7 @@ public class CurrentBoardTests extends TestBase{
 
     @Test
     public void  isCorrectCurrentBoard(){
-      //  System.out.println("Header of the current board: "+ driver.findElement(By.tagName("h1")).getText());
-        Assert.assertEquals(driver.findElement(By.tagName("h1")).getText(), "QA Haifa7", "The header of the script is not 'QA Haifa7'");
+       Assert.assertEquals(driver.findElement(By.tagName("h1")).getText(), "QA Haifa7", "The header of the script is not 'QA Haifa7'");
     }
 
 
@@ -71,13 +70,11 @@ public class CurrentBoardTests extends TestBase{
 
     @Test
     public void DeletingListPositiveTest() {
-        //printing qty of lists
+        //qty of lists
         int listQty = driver.findElements(By.xpath("//div[@class='list js-list-content']")).size();
-        System.out.println("Quantity of lists before deleting: " + listQty);
-
 
         if (listQty == 0){
-            //adding one more list
+            //if there are no lists add one more list
             waitUntilElementIsClickable((By.xpath("//span[@class='placeholder']")), 15);
             WebElement addList = driver.findElement(By.xpath("//span[@class='placeholder']"));
             addList.click();
@@ -96,6 +93,7 @@ public class CurrentBoardTests extends TestBase{
             waitUntilElementIsInvisible(By.cssSelector("a.icon-close.dark-hover"), 5);
         }
 
+        int listQtyBeforeDeleting = driver.findElements(By.xpath("//div[@class='list js-list-content']")).size();
         waitUntilElementsAreVisible(By.xpath("//div[@class='list js-list-content']"), 10);
         waitUntilElementIsClickable((By.cssSelector("a.list-header-extras-menu")), 15);
         WebElement listAction = driver.findElement(By.cssSelector("a.list-header-extras-menu"));
@@ -103,15 +101,8 @@ public class CurrentBoardTests extends TestBase{
         waitUntilElementIsClickable((By.xpath("//a[@class='js-close-list']")), 15);
         WebElement archiveList = driver.findElement(By.xpath("//a[@class='js-close-list']"));
         archiveList.click();
-       // waitUntilElementIsPresent((By.xpath("//div[@class='list-header-target js-editing-target']")), 15);
-       // System.out.println("Quantity of lists after deleting: " + driver.findElements(By.xpath("//div[@class='list-header-target js-editing-target']")).size());
         int listQtyAfterDeleting = driver.findElements(By.xpath("//div[@class='list-header-target js-editing-target']")).size();
-       if (listQty != 0) {
-           Assert.assertEquals(listQtyAfterDeleting, listQty-1);
-       }
-       else {
-           System.out.println("Quantity of lists after deleting: " + driver.findElements(By.xpath("//div[@class='list-header-target js-editing-target']")).size());
-       }
+        Assert.assertEquals(listQtyAfterDeleting, listQtyBeforeDeleting-1);
     }
 
     @Test
