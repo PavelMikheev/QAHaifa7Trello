@@ -1,26 +1,29 @@
-package tests;
+package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import pages.LoginPageHelper;
 
-import java.sql.Driver;
-
-public class TestBase {
-
-    public static final String LOGIN = "pavelmikheev65@gmail.com";
-    public static final String PASSWORD = "Perfect10)";
+public class PageBase {
     WebDriver driver;
+    public PageBase (WebDriver driver){
+
+        this.driver = driver;
+    }
 
     public void waitUntilElementIsClickable(By locator, int time) {
         try {
             new WebDriverWait(driver,time).until(ExpectedConditions.elementToBeClickable(locator));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void waitUntilElementIsClickable(WebElement element, int time) {
+        try {
+            new WebDriverWait(driver,time).until(ExpectedConditions.elementToBeClickable(element));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,7 +37,9 @@ public class TestBase {
         }
     }
 
-    public void waitUntilElementIsInvisible(By locator, int time){
+
+
+       public void waitUntilElementIsInvisible(By locator, int time){
         try {
             new WebDriverWait(driver,time).until(ExpectedConditions.invisibilityOfElementLocated(locator));
         } catch (Exception e) {
@@ -58,20 +63,16 @@ public class TestBase {
         }
     }
 
-    @BeforeMethod
-    public void StartAppl() throws InterruptedException {
-        //Driver initialization =  Open Trello application;
-       // ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--lang=" + "rus");
-        driver = new ChromeDriver(/*options*/);
-        driver.get("https://trello.com/en");
-
+    public void waitUntilElementIsVisible(WebElement element, int time) {
+        try {
+            new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOf(element));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void waitUntilPageIsLoaded() {
+        waitUntilElementIsClickable(By.xpath("//a[@class='btn btn-sm btn-link text-white']"),15);
     }
 
-    @AfterMethod
-    public void tearDown(){
-        driver.quit();
-
-    }
 
 }
