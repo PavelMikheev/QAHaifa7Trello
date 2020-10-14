@@ -24,6 +24,7 @@ public class ProfileVisibilityTests extends TestBase {
         boardsPage = PageFactory.initElements(driver, BoardsPageHelper.class);
         homePage = PageFactory.initElements(driver, HomePageHelper.class);
         qaHaifa7currentBoard = new CurrentBoardPageHelper(driver, "QA Haifa7");
+        profileVisibilityMenu = new ProfileVisibilityHelper(driver, "Activity");
 
         homePage.waitUntilPageIsLoaded();
         homePage.openLoginPage();
@@ -36,14 +37,11 @@ public class ProfileVisibilityTests extends TestBase {
 
 
     @Test
-    public void isActivityPage(){
-        //waitUntilElementIsClickable(By.className("_24AWINHReYjNBf"), 15);
-       // WebElement openMemberMenuButton = driver.findElement(By.className("_24AWINHReYjNBf"));
-       // openMemberMenuButton.click();
-      //  waitUntilElementIsPresent(By.className("_2Un9i9htRmbUrY"), 15);
-       profileVisibilityMenu.openMemberMenuButton();
-        profileVisibilityMenu.clickActivityButton();
-        Assert.assertEquals(profileVisibilityMenu.clickActivityButton(), "Activity");
+    public void isActivityPage() {
+      profileVisibilityMenu.openMemberMenuButton();
+      profileVisibilityMenu.clickActivityButton();
+      profileVisibilityMenu.activityBoardName();
+      Assert.assertEquals(profileVisibilityMenu.activityBoardName(), "Activity");
     }
 
 
@@ -57,9 +55,11 @@ public class ProfileVisibilityTests extends TestBase {
         qaHaifa7currentBoard.finishAddingNewList();
         profileVisibilityMenu.openMemberMenuButton();
         profileVisibilityMenu.clickActivityButton();
+        qaHaifa7currentBoard.addAddCardButton();
+        qaHaifa7currentBoard.enterNameInCard("card");
         waitUntilElementIsPresent(By.className("tabbed-pane-header"),15);
         Assert.assertEquals(profileVisibilityMenu.lastRecordActivity(), "P\n" +
-                "Pavel added list test to QA Haifa7\n" +
+                "Pavel added card to test\n" +
                 "just now - on board QA Haifa7");
     }
 

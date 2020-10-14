@@ -82,6 +82,20 @@ HomePageHelper homePage;
         Assert.assertEquals(listQtyAfterDeleting, listQtyBeforeDeleting-1);
     }
 
+    @Test
+    public void addingListAndCardToList() throws InterruptedException {
+        qaHaifa7currentBoard.addNewList();
+        qaHaifa7currentBoard.nameForNewListTest();
+        qaHaifa7currentBoard.clickAddListButton();
+        waitUntilElementIsPresent(By.xpath("//div[@class='list-header-target js-editing-target']"), 15);
+        waitUntilElementsAreVisible(By.xpath("//div[@class='list js-list-content']"), 10);
+        qaHaifa7currentBoard.clickListActionButton();
+        qaHaifa7currentBoard.addAddCardButton();
+        qaHaifa7currentBoard.enterNameInCard("card");
+
+
+    }
+
 
 
 

@@ -19,7 +19,10 @@ public class CurrentBoardPageHelper extends PageBase{
     WebElement addNewList;
     @FindBy(xpath ="//div[@class='list-header-target js-editing-target']")
     WebElement qtyOfLists;
-
+    @FindBy (xpath = "//li//a[@class='js-add-card']")
+    WebElement addCardButton;
+    @FindBy (xpath =  "//div[@class='list-card js-composer']")
+    WebElement textInCard;
 
     String boardName;
 
@@ -100,6 +103,18 @@ public class CurrentBoardPageHelper extends PageBase{
         WebElement openMemberMenu = driver.findElement(By.xpath("//button[@aria-label='Open Member Menu']"));
         openMemberMenu.click();
     }
+
+    public void addAddCardButton() {
+        waitUntilElementIsClickable(addCardButton, 15);
+        addCardButton.click();
+    }
+
+    public void enterNameInCard(String card)  {
+     waitUntilElementIsVisible(textInCard, 15);
+        textInCard.click();
+        textInCard.sendKeys(card);
+    }
+
 
 
 }

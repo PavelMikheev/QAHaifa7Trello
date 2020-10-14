@@ -11,9 +11,11 @@ public class ProfileVisibilityHelper extends PageBase {
     @FindBy (xpath = "//div[@class='phenom mod-attachment-type'][1]")
     WebElement lastRecordInActivity;
     @FindBy (className = "_24AWINHReYjNBf")
-            WebElement menuButton;
+    WebElement menuButton;
     @FindBy (xpath = "//span[text()='Activity']//..//span[@class='_1uK2vQ_aMRS2NU']")
-            WebElement activityButton;
+    WebElement activityButton;
+    @FindBy (xpath = "//li[@class='tabbed-pane-nav-item'][2]")
+            WebElement boardActivity;
 
 String tabName;
 
@@ -24,19 +26,22 @@ String tabName;
         PageFactory.initElements(driver, this);
     }
 
-    public String clickActivityButton() {
-        waitUntilElementIsClickable( activityButton, 10);
-        //WebElement ActivityButton = driver.findElement(By.xpath("//span[text()='Activity']//..//span[@class='_1uK2vQ_aMRS2NU']"));
+    public void clickActivityButton()  {
+
+      waitUntilElementIsClickable(activityButton, 15);
         activityButton.click();
-        return activityButton.getText();
-                //driver.findElement(By.className("tabbed-pane-nav-item-button.js-member-activity.active")).getText();
+
+    }
+
+    public String activityBoardName(){
+        waitUntilElementIsVisible(boardActivity, 15);
+        return boardActivity.getText();
     }
 
     public void openMemberMenuButton() {
         waitUntilElementIsClickable(menuButton, 15);
-      //  WebElement openMemberMenuButton = driver.findElement(By.className("_24AWINHReYjNBf"));
         menuButton.click();
-       // waitUntilElementIsPresent(By.className("_2Un9i9htRmbUrY"), 15);
+        waitUntilElementIsVisible(driver.findElement(By.className("_2Un9i9htRmbUrY")),15);
     }
 
     public String lastRecordActivity() {
