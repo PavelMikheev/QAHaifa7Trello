@@ -1,22 +1,18 @@
 package tests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.*;
 
-import java.util.Collection;
-
-public class ProfileVisibilityTests extends TestBase {
+public class ActivityTests extends TestBase {
     LoginPageHelper loginPage;
     BoardsPageHelper boardsPage;
     CurrentBoardPageHelper qaHaifa7currentBoard;
     HomePageHelper homePage;
-    ProfileVisibilityHelper profileVisibilityMenu;
+    ActivityHelper activityMenu;
 
     @BeforeMethod
     public void initTests() {
@@ -24,7 +20,7 @@ public class ProfileVisibilityTests extends TestBase {
         boardsPage = PageFactory.initElements(driver, BoardsPageHelper.class);
         homePage = PageFactory.initElements(driver, HomePageHelper.class);
         qaHaifa7currentBoard = new CurrentBoardPageHelper(driver, "QA Haifa7");
-        profileVisibilityMenu = new ProfileVisibilityHelper(driver, "Activity");
+        activityMenu = new ActivityHelper(driver, "Activity");
 
         homePage.waitUntilPageIsLoaded();
         homePage.openLoginPage();
@@ -38,29 +34,31 @@ public class ProfileVisibilityTests extends TestBase {
 
     @Test
     public void isActivityPage() {
-      profileVisibilityMenu.openMemberMenuButton();
-      profileVisibilityMenu.clickActivityButton();
-      profileVisibilityMenu.activityBoardName();
-      Assert.assertEquals(profileVisibilityMenu.activityBoardName(), "Activity");
+      activityMenu.openMemberMenuButton();
+      activityMenu.clickActivityButton();
+      activityMenu.activityBoardName();
+      Assert.assertEquals(activityMenu.activityBoardName(), "Activity");
     }
 
 
 
     @Test
     public void checkLastRecordActivity() {
-
         qaHaifa7currentBoard.addNewList();
         qaHaifa7currentBoard.nameForNewListTest();
         qaHaifa7currentBoard.clickAddListButton();
-        qaHaifa7currentBoard.finishAddingNewList();
-        profileVisibilityMenu.openMemberMenuButton();
-        profileVisibilityMenu.clickActivityButton();
+        waitUntilElementIsPresent(By.xpath("//div[@class='list-header-target js-editing-target']"), 15);
+        waitUntilElementsAreVisible(By.xpath("//div[@class='list js-list-content']"), 10);
+        qaHaifa7currentBoard.clickListActionButton();
         qaHaifa7currentBoard.addAddCardButton();
         qaHaifa7currentBoard.enterNameInCard("card");
-        waitUntilElementIsPresent(By.className("tabbed-pane-header"),15);
-        Assert.assertEquals(profileVisibilityMenu.lastRecordActivity(), "P\n" +
+        activityMenu.openMemberMenuButton();
+        activityMenu.clickActivityButton();
+        waitUntilElementIsVisible(By.className("tabbed-pane-header"),15);
+        Assert.assertEquals(activityMenu.lastRecordActivity(), "P\n" +
                 "Pavel added card to test\n" +
                 "just now - on board QA Haifa7");
+
     }
 
 }

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import tests.TestBase;
 
-public class ProfileVisibilityHelper extends PageBase {
+public class ActivityHelper extends PageBase {
     @FindBy (xpath = "//div[@class='phenom mod-attachment-type'][1]")
     WebElement lastRecordInActivity;
     @FindBy (className = "_24AWINHReYjNBf")
@@ -19,7 +19,7 @@ public class ProfileVisibilityHelper extends PageBase {
 
 String tabName;
 
-    public ProfileVisibilityHelper(WebDriver driver, String tabName) {
+    public ActivityHelper(WebDriver driver, String tabName) {
 
         super(driver);
         this.tabName = tabName;

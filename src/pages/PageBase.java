@@ -29,6 +29,13 @@ public class PageBase {
         }
     }
 
+  // public void waitUntilElementsAreClickable (List<WebElement> list, int time) {
+   //     try {
+   //         new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOfAllElements());
+    //    } catch (Exception e) {
+    //        e.printStackTrace();
+   //
+//
     public void waitUntilElementIsPresent(By locator, int time){
         try {
             new WebDriverWait(driver,time).until(ExpectedConditions.presenceOfElementLocated(locator));

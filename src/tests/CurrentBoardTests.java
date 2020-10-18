@@ -50,9 +50,7 @@ HomePageHelper homePage;
     public void NewListPositiveTest() {
 
         int qtyListsBeforeAdding = qaHaifa7currentBoard.getQtyOfLists();
-        qaHaifa7currentBoard.addNewList();
-        qaHaifa7currentBoard.nameForNewListTest();
-        qaHaifa7currentBoard.clickAddListButton();
+        qaHaifa7currentBoard.addNewListInBoard();
         waitUntilElementIsPresent(By.xpath("//div[@class='list-header-target js-editing-target']"), 15);
         int qtyListAfterAdding = qaHaifa7currentBoard.getQtyOfLists();
         Assert.assertEquals(qtyListAfterAdding, qtyListsBeforeAdding+1);
@@ -63,18 +61,15 @@ HomePageHelper homePage;
 
     @Test
     public void DeletingListPositiveTest() {
-        //qty of lists
-        int listQty = driver.findElements(By.xpath("//div[@class='list js-list-content']")).size();
 
-        if (listQty == 0){
+        if (qaHaifa7currentBoard.getListQtyBeforeDeleting() == 0){
             //if there are no lists add one more list
-            qaHaifa7currentBoard.addNewList();
-            qaHaifa7currentBoard.nameForNewListTest();
-            qaHaifa7currentBoard.clickAddListButton();
+            qaHaifa7currentBoard.addNewListInBoard();
             qaHaifa7currentBoard.finishAddingNewList();
+
         }
 
-        int listQtyBeforeDeleting = driver.findElements(By.xpath("//div[@class='list js-list-content']")).size();
+        int listQtyBeforeDeleting = qaHaifa7currentBoard.getListQtyBeforeDeleting();
         waitUntilElementsAreVisible(By.xpath("//div[@class='list js-list-content']"), 10);
         qaHaifa7currentBoard.clickListActionButton();
         qaHaifa7currentBoard.clickArchiveListButton();
@@ -82,11 +77,11 @@ HomePageHelper homePage;
         Assert.assertEquals(listQtyAfterDeleting, listQtyBeforeDeleting-1);
     }
 
+
+
     @Test
-    public void addingListAndCardToList() throws InterruptedException {
-        qaHaifa7currentBoard.addNewList();
-        qaHaifa7currentBoard.nameForNewListTest();
-        qaHaifa7currentBoard.clickAddListButton();
+    public void addingListAndCardToList() {
+        qaHaifa7currentBoard.addNewListInBoard();
         waitUntilElementIsPresent(By.xpath("//div[@class='list-header-target js-editing-target']"), 15);
         waitUntilElementsAreVisible(By.xpath("//div[@class='list js-list-content']"), 10);
         qaHaifa7currentBoard.clickListActionButton();
@@ -101,15 +96,15 @@ HomePageHelper homePage;
 
     @Test
     public void UserNameOfAccountInProfileAndVisibilityIsSame(){
-        String userNameIcon = driver.findElement(By.xpath("//div[@class='_1FekJJAz6Hu32v']")).getAttribute("title");
-        System.out.println(userNameIcon);
+        qaHaifa7currentBoard.getNameFromUserNameIcon();
         qaHaifa7currentBoard.openMemberMenu();
         qaHaifa7currentBoard.clickProfileAndVisibilityButton();
-        String userNameInProfile = qaHaifa7currentBoard.userNameInProfile();
         //check if userNameIcon contains userNameInProfile
-        Assert.assertTrue(userNameIcon.contains(userNameInProfile));
+        Assert.assertTrue(qaHaifa7currentBoard.getNameFromUserNameIcon().contains(qaHaifa7currentBoard.userNameInProfile()));
 
     }
+
+
 
 
 }
